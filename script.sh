@@ -12,7 +12,7 @@ rm -fr "$renamedDir"
 mkdir -p "$renamedDir"
 
 function dedupeCleanName {
-  local val=$targetFileName # var is global
+  local val=$targetFileName # it's not magic, this var is global. All vars are global :'(
   while [ -f "$renamedDir/$val" ]; do
     echo "[WARN] avoiding collision of filename=$val"
     val=`bash -c "echo $val | perl -pe 's/.pdf$/_.pdf/'"`
@@ -34,7 +34,8 @@ for curr in *.pdf; do
   echo "[INFO] moving '$curr' to '$targetFileName'"
   cp "$curr" "$targetFilePath"
   subject="Report from TERN on ecological surveys conducted in/on/near $cleanName"
-  keywords="One, Two, Three" # FIXME add keywords
+  # it seems you don't need to add list terms individually. exiftool is smart enough to figure out the list
+  keywords="TERN, AusPlots, vegetation, plant, survey, method, biological, soil, point intercept, plant collection, leaf tissue, site description, structural summary, leaf area index, basal area, soil classification, meta barcoding, metabarcode, soil bulk density, 3d photo panorama"
   exiftool \
     -overwrite_original \
     -quiet \
